@@ -1,0 +1,78 @@
+{
+  "originHash" : "cd3c59bec90fae6d9e5460dcbe33a53c8d06db87e1a3035db8371d1d49ff58f4",
+  "pins" : [
+    {
+      "identity" : "better-binding",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/laconicman/better-binding",
+      "state" : {
+        "revision" : "ec1dae389e4b72220f9b4b5cb3620e08b7a3b3c4",
+        "version" : "0.1.0"
+      }
+    },
+    {
+      "identity" : "oslogloggingmiddleware",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/laconicman/OSLogLoggingMiddleware",
+      "state" : {
+        "revision" : "52150c4b254f71765f197c42b9064fd7518c3a17",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "sfsafesymbols",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SFSafeSymbols/SFSafeSymbols",
+      "state" : {
+        "revision" : "3dd282d3269b061853a3b3bcd23a509d2aa166ce",
+        "version" : "6.2.0"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections",
+      "state" : {
+        "revision" : "c1805596154bb3a265fd91b8ac0c4433b4348fb0",
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "swift-http-types",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-http-types",
+      "state" : {
+        "revision" : "a0a57e949a8903563aba4615869310c0ebf14c03",
+        "version" : "1.4.0"
+      }
+    },
+    {
+      "identity" : "swift-identified-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-identified-collections",
+      "state" : {
+        "revision" : "322d9ffeeba85c9f7c4984b39422ec7cc3c56597",
+        "version" : "1.1.1"
+      }
+    },
+    {
+      "identity" : "swift-openapi-runtime",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-openapi-runtime",
+      "state" : {
+        "revision" : "8f33cc5dfe81169fb167da73584b9c72c3e8bc23",
+        "version" : "1.8.2"
+      }
+    },
+    {
+      "identity" : "swift-openapi-urlsession",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-openapi-urlsession",
+      "state" : {
+        "revision" : "6fac6f7c428d5feea2639b5f5c8b06ddfb79434b",
+        "version" : "1.1.0"
+      }
+    }
+  ],
+  "version" : 3
+}

@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
-import SwiftData
+/* import SwiftData
 
 @main
 struct YandexDeliveryExpressDemoApp: App {
+    @StateObject private var state = DemoState()
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Claim.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,8 +26,26 @@ struct YandexDeliveryExpressDemoApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            // ContentView()
+            PhaseNavigationView()
+                .environmentObject(state)
         }
         .modelContainer(sharedModelContainer)
+    }
+}
+*/
+
+// Sources/ExpressDemo/ExpressDemoApp.swift
+import SwiftUI
+
+@main
+struct ExpressDemoApp: App {
+    @StateObject private var state = RequestState()
+
+    var body: some Scene {
+        WindowGroup {
+            PhaseNavigationView()
+                .environmentObject(state)
+        }
     }
 }

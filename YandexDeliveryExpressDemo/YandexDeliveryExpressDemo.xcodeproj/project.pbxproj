@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		DA155BC22E495C0D006DAF51 /* BetterBinding in Frameworks */ = {isa = PBXBuildFile; productRef = DA155BC12E495C0D006DAF51 /* BetterBinding */; };
+		DA4BF4472E3CA1F8002BC807 /* IdentifiedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = DA4BF4462E3CA1F8002BC807 /* IdentifiedCollections */; };
+		DAB627ED2E314F98006BDB1D /* ReflectionHelper in Frameworks */ = {isa = PBXBuildFile; productRef = DAB627EC2E314F98006BDB1D /* ReflectionHelper */; };
+		DAE444EC2E26EB1200C1CDF7 /* YandexDeliveryExpressAPI in Frameworks */ = {isa = PBXBuildFile; productRef = DAE444EB2E26EB1200C1CDF7 /* YandexDeliveryExpressAPI */; };
+		DAF25B612E341F11001A1FB8 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = DAF25B602E341F11001A1FB8 /* SFSafeSymbols */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		DAE444C12E26E71B00C1CDF7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -33,17 +41,29 @@
 		DAE444D22E26E71B00C1CDF7 /* Exceptions for "YandexDeliveryExpressDemo" folder in "YandexDeliveryExpressDemo" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"Common/Views/LabeledContent+init.swift",
 				Info.plist,
 			);
 			target = DAE444AE2E26E71900C1CDF7 /* YandexDeliveryExpressDemo */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		DA6C54302E3A3BE3002A14A7 /* Exceptions for "YandexDeliveryExpressDemo" folder in "Copy Bundle Resources" phase from "YandexDeliveryExpressDemo" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = DAE444AD2E26E71900C1CDF7 /* Resources */;
+			membershipExceptions = (
+				"Common/Views/LabeledContent+init.swift",
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		DAE444B12E26E71900C1CDF7 /* YandexDeliveryExpressDemo */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				DAE444D22E26E71B00C1CDF7 /* Exceptions for "YandexDeliveryExpressDemo" folder in "YandexDeliveryExpressDemo" target */,
+				DA6C54302E3A3BE3002A14A7 /* Exceptions for "YandexDeliveryExpressDemo" folder in "Copy Bundle Resources" phase from "YandexDeliveryExpressDemo" target */,
 			);
 			path = YandexDeliveryExpressDemo;
 			sourceTree = "<group>";
@@ -65,6 +85,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA4BF4472E3CA1F8002BC807 /* IdentifiedCollections in Frameworks */,
+				DAF25B612E341F11001A1FB8 /* SFSafeSymbols in Frameworks */,
+				DAE444EC2E26EB1200C1CDF7 /* YandexDeliveryExpressAPI in Frameworks */,
+				DAB627ED2E314F98006BDB1D /* ReflectionHelper in Frameworks */,
+				DA155BC22E495C0D006DAF51 /* BetterBinding in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +150,11 @@
 			);
 			name = YandexDeliveryExpressDemo;
 			packageProductDependencies = (
+				DAE444EB2E26EB1200C1CDF7 /* YandexDeliveryExpressAPI */,
+				DAB627EC2E314F98006BDB1D /* ReflectionHelper */,
+				DAF25B602E341F11001A1FB8 /* SFSafeSymbols */,
+				DA4BF4462E3CA1F8002BC807 /* IdentifiedCollections */,
+				DA155BC12E495C0D006DAF51 /* BetterBinding */,
 			);
 			productName = YandexDeliveryExpressDemo;
 			productReference = DAE444AF2E26E71900C1CDF7 /* YandexDeliveryExpressDemo.app */;
@@ -208,6 +238,13 @@
 			);
 			mainGroup = DAE444A62E26E71900C1CDF7;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				DAE444EA2E26EB1200C1CDF7 /* XCLocalSwiftPackageReference "../../../Gateways/YandexDeliveryExpress" */,
+				DAB627EB2E314F98006BDB1D /* XCLocalSwiftPackageReference "../../../OpenSource/ReflectionHelper" */,
+				DAF25B5F2E341F11001A1FB8 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
+				DA4BF4452E3CA1F8002BC807 /* XCRemoteSwiftPackageReference "swift-identified-collections" */,
+				DA155BC02E495C0D006DAF51 /* XCRemoteSwiftPackageReference "better-binding" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = DAE444B02E26E71900C1CDF7 /* Products */;
 			projectDirPath = "";
@@ -305,10 +342,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.learnable.YandexDeliveryExpressDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -318,7 +355,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 2.5;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -345,10 +382,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.learnable.YandexDeliveryExpressDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -358,7 +395,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 2.5;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};
@@ -608,6 +645,70 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		DAB627EB2E314F98006BDB1D /* XCLocalSwiftPackageReference "../../../OpenSource/ReflectionHelper" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../../OpenSource/ReflectionHelper;
+		};
+		DAE444EA2E26EB1200C1CDF7 /* XCLocalSwiftPackageReference "../../../Gateways/YandexDeliveryExpress" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../../Gateways/YandexDeliveryExpress;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DA155BC02E495C0D006DAF51 /* XCRemoteSwiftPackageReference "better-binding" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/laconicman/better-binding";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
+		DA4BF4452E3CA1F8002BC807 /* XCRemoteSwiftPackageReference "swift-identified-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-identified-collections";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.1;
+			};
+		};
+		DAF25B5F2E341F11001A1FB8 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SFSafeSymbols/SFSafeSymbols";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DA155BC12E495C0D006DAF51 /* BetterBinding */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DA155BC02E495C0D006DAF51 /* XCRemoteSwiftPackageReference "better-binding" */;
+			productName = BetterBinding;
+		};
+		DA4BF4462E3CA1F8002BC807 /* IdentifiedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DA4BF4452E3CA1F8002BC807 /* XCRemoteSwiftPackageReference "swift-identified-collections" */;
+			productName = IdentifiedCollections;
+		};
+		DAB627EC2E314F98006BDB1D /* ReflectionHelper */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ReflectionHelper;
+		};
+		DAE444EB2E26EB1200C1CDF7 /* YandexDeliveryExpressAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = YandexDeliveryExpressAPI;
+		};
+		DAF25B602E341F11001A1FB8 /* SFSafeSymbols */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DAF25B5F2E341F11001A1FB8 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */;
+			productName = SFSafeSymbols;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DAE444A72E26E71900C1CDF7 /* Project object */;
 }
