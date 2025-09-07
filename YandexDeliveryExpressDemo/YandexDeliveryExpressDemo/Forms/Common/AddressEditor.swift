@@ -8,7 +8,7 @@
 // TODO: Generalize: split m/vm, domain/appliction/logic.
 
 import SwiftUI
-import BetterBinding
+import BetterBinding //TODO: Remove? No need `Field` can do `???` logic.
 import YandexDeliveryExpressAPI
 
 struct AddressEditor: View {
@@ -62,9 +62,13 @@ struct AddressEditor: View {
             Field("Floor", value: $address.sfloor ??? "")
             
             Field("Apartment", value: $address.sflat ?? "")
+            
+            Field("Comment", value: $address.comment ?? "")
+                .textFieldStyle(.roundedBorder)
+                .lineLimit(2...4)
         }
-        
     }
+
 }
 
 #Preview {

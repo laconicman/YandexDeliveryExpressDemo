@@ -7,7 +7,7 @@
 
 import SwiftUI
 import YandexDeliveryExpressAPI
-import BetterBinding
+// import BetterBinding
 
 struct RequirementsSection: View {
     @Binding private(set) var taxiClasses: [Components.Schemas.TaxiClass]

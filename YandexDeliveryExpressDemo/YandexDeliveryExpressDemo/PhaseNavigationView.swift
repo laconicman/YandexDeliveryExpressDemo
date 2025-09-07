@@ -60,32 +60,36 @@ struct PhaseNavigationView: View {
     }
 }
 
-enum Phase: String, CaseIterable, Identifiable, SystemImageRepresentable  {
-    case calculateOffers = "Calculate Offers"
-    case createClaim     = "Create Claim"
-    case getClaimInfo    = "Get Claim Info"
-    case acceptClaim     = "Accept Claim"
-    case cancelClaim     = "Cancel Claim"
-    
-    var id: Self { self }
-    
-    var description: String {
-        switch self {
-        case .calculateOffers: "Calculate delivery offers for a route"
-        case .createClaim: "Create a new delivery claim"
-        case .getClaimInfo: "Get information about existing claim"
-        case .acceptClaim: "Accept a delivery claim"
-        case .cancelClaim: "Cancel an existing claim"
+extension PhaseNavigationView {
+
+    enum Phase: String, CaseIterable, Identifiable, SystemImageRepresentable  {
+        case calculateOffers = "Calculate Offers"
+        case createClaim     = "Create Claim"
+        case getClaimInfo    = "Get Claim Info"
+        case acceptClaim     = "Accept Claim"
+        case cancelClaim     = "Cancel Claim"
+        
+        var id: Self { self }
+        
+        var description: String {
+            switch self {
+            case .calculateOffers: String(localized: "Calculate delivery offers for a route")
+            case .createClaim: String(localized: "Create a new delivery claim")
+            case .getClaimInfo: String(localized: "Get information about existing claim")
+            case .acceptClaim: String(localized: "Accept a delivery claim")
+            case .cancelClaim: String(localized: "Cancel an existing claim")
+            }
+        }
+        
+        var systemName: String {
+            switch self {
+            case .calculateOffers: "questionmark.text.page"
+            case .createClaim: "plus.circle"
+            case .getClaimInfo: "info.circle"
+            case .acceptClaim: "checkmark.circle"
+            case .cancelClaim: "xmark.circle"
+            }
         }
     }
     
-    var systemName: String {
-        switch self {
-        case .calculateOffers: "questionmark.text.page"
-        case .createClaim: "plus.circle"
-        case .getClaimInfo: "info.circle"
-        case .acceptClaim: "checkmark.circle"
-        case .cancelClaim: "xmark.circle"
-        }
-    }
 }

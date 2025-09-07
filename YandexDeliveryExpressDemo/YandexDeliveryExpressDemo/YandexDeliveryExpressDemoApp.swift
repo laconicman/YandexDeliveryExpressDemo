@@ -41,11 +41,13 @@ import SwiftUI
 @main
 struct ExpressDemoApp: App {
     @StateObject private var state = RequestState()
+    @StateObject private var common = CommonViewModel()
 
     var body: some Scene {
         WindowGroup {
             PhaseNavigationView()
                 .environmentObject(state)
+                .environmentObject(common)
         }
     }
 }

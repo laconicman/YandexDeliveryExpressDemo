@@ -1,9 +1,10 @@
 // Sources/ExpressDemo/components/EditorComponents.swift
+/*
 import SwiftUI
 import YandexDeliveryExpressAPI
 
 // MARK: - Cargo Point Editor
-/*
+
 struct RoutePointEditor: View {
     @Binding var routePoint: Components.Schemas.RoutePoint
     let index: Int
@@ -49,7 +50,7 @@ struct RoutePointEditor: View {
         }
     }
 }
-*/
+
 // MARK: - Point Address Editor
 
 struct PointAddressEditor: View {
@@ -136,26 +137,5 @@ struct PointAddressEditor: View {
         }
     }
 }
+*/
 
-// MARK: - Contact Editor
-
-struct ContactEditor: View {
-    @Binding var contact: Components.Schemas.Contact
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Field("Name", value: $contact.name)
-            Field("Phone", value: $contact.phone)
-            
-            Field("Email", value: Binding(
-                get: { contact.email ?? "" },
-                set: { contact.email = $0.isEmpty ? nil : $0 }
-            ))
-            
-            Field("Additional Code", value: Binding(
-                get: { contact.phoneAdditionalCode ?? "" },
-                set: { contact.phoneAdditionalCode = $0.isEmpty ? nil : $0 }
-            ))
-        }
-    }
-}

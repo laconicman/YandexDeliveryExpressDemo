@@ -8,6 +8,7 @@
 import Foundation
 import YandexDeliveryExpressAPI
 
+// TODO: consider refactoring using [Unidirectional flow in Swift](https://swiftwithmajid.com/2023/07/11/unidirectional-flow-in-swift)
 @MainActor
 final class RequestState: ObservableObject {
     @Published var resultText: String = ""

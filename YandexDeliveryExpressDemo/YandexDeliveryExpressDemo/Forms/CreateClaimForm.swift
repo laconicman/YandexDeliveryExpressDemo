@@ -24,8 +24,7 @@ struct CreateClaimForm: View {
             additionalSection
         }
     }
-    
-    @ViewBuilder
+
     private var requestIdSection: some View {
         Section("Request ID") {
             Field("Request ID", value: $viewModel.requestId)
@@ -34,8 +33,7 @@ struct CreateClaimForm: View {
             }
         }
     }
-    
-    @ViewBuilder
+
     private var clientRequirementsSection: some View {
         Section("Client Requirements") {
             
@@ -50,8 +48,7 @@ struct CreateClaimForm: View {
             }
         }
     }
-    
-    @ViewBuilder
+
     private var additionalSection: some View {
         Section("Additional Information") {
             TextField("Shipping Document", text: $viewModel.shippingDocument)
