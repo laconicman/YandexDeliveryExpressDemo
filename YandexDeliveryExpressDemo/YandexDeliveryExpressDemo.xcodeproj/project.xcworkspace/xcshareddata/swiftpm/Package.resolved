@@ -1,5 +1,5 @@
 {
-  "originHash" : "f13c15e053ae62e8722df630b9189772f3c24309c2a4f3c736fc0b9a5651cbed",
+  "originHash" : "f3f5c3d1db000e54ef266f903b0060d0933bf301421244863003960850c18a5f",
   "pins" : [
     {
       "identity" : "better-binding",
@@ -53,6 +53,15 @@
       "state" : {
         "revision" : "52150c4b254f71765f197c42b9064fd7518c3a17",
         "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "reflectionhelper",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/laconicman/ReflectionHelper",
+      "state" : {
+        "revision" : "f1031c0a00193a887ecbbe447a9c504f6bb3d574",
+        "version" : "1.0.0"
       }
     },
     {

@@ -18,12 +18,6 @@ preview with literals.
 
 ## Next
 
-### Make a clean clone build
-
-Half done: `YandexDeliveryExpressAPI` comes from its tagged URL now, but `ReflectionHelper`
-still resolves through a relative path to a package that exists on exactly one machine and has
-no remote (AD-6). Until that is settled, nobody else can build this app.
-
 ### Tests worth having
 
 `ClaimFormatting` and validation are pure functions once presentation leaves the views — test
