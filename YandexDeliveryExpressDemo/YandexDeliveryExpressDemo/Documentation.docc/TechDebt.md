@@ -33,14 +33,24 @@ that is a decision each time, not the default.
   (its TD-5 flattening).
 - **Discharge:** plain values plus a convenience `init` in an extension (R2).
 
-## AD-4 — The app consumes the package by path — **open**
+## AD-4 — A clean clone could not build — **discharged**
 
-`XCLocalSwiftPackageReference` to `../../../Gateways/YandexDeliveryExpress`, which is the
-sanctioned local-override workflow but means a clean clone does not prove the published
-product builds.
+The project referenced two packages by relative path, so a clone anywhere else failed to
+resolve. Both are now remote:
 
-- **Cost:** the one thing a sample app exists to prove is unproven.
-- **Discharge:** switch to the URL now that `0.1.0` is tagged — <doc:Roadmap> → Next.
+| Package | Reference |
+|---|---|
+| `YandexDeliveryExpressAPI` | `https://github.com/laconicman/YandexDeliveryExpress` — `upToNextMajorVersion` from `0.1.0` |
+| `ReflectionHelper` | `https://github.com/laconicman/ReflectionHelper` — `upToNextMajorVersion` from `1.0.0` |
+
+`Package.resolved` is committed, as an app's should be. Cross-editing is unaffected: dragging
+a local package folder into the project still overrides the remote of the same name, which is
+why this manifest never has to be edited back and forth.
+
+- **Verified the way the entry demands**, by cloning elsewhere and resolving — not by resolving
+  in the working copy, where every local path still exists. That shortcut is how this item was
+  first marked discharged while still broken, and the command is written down above the fix so
+  the next person does not repeat it.
 
 ## AD-5 — Almost no previews, and no tests — **open**
 

@@ -18,14 +18,6 @@ preview with literals.
 
 ## Next
 
-### Consume the package by URL
-
-`YandexDeliveryExpressAPI` is tagged `0.1.0`. The project currently uses a local package
-reference, which is the sanctioned workflow for cross-editing but means a clean clone does not
-prove the published product builds. Switch to
-`.package(url: "https://github.com/laconicman/YandexDeliveryExpress", from: "0.1.0")` and keep
-`Package.resolved` committed.
-
 ### Tests worth having
 
 `ClaimFormatting` and validation are pure functions once presentation leaves the views — test

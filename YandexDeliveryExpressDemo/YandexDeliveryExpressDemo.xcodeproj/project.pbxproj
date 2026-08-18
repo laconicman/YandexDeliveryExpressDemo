@@ -242,8 +242,8 @@
 			mainGroup = DAE444A62E26E71900C1CDF7;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				DAE444EA2E26EB1200C1CDF7 /* XCLocalSwiftPackageReference "../../../Gateways/YandexDeliveryExpress" */,
-				DAB627EB2E314F98006BDB1D /* XCLocalSwiftPackageReference "../../../OpenSource/ReflectionHelper" */,
+				DAE444EA2E26EB1200C1CDF7 /* XCRemoteSwiftPackageReference "YandexDeliveryExpress" */,
+				DAB627EB2E314F98006BDB1D /* XCRemoteSwiftPackageReference "ReflectionHelper" */,
 				DAF25B5F2E341F11001A1FB8 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 				DA4BF4452E3CA1F8002BC807 /* XCRemoteSwiftPackageReference "swift-identified-collections" */,
 				DA155BC02E495C0D006DAF51 /* XCRemoteSwiftPackageReference "better-binding" */,
@@ -650,18 +650,23 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		DAB627EB2E314F98006BDB1D /* XCLocalSwiftPackageReference "../../../OpenSource/ReflectionHelper" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../OpenSource/ReflectionHelper;
-		};
-		DAE444EA2E26EB1200C1CDF7 /* XCLocalSwiftPackageReference "../../../Gateways/YandexDeliveryExpress" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../Gateways/YandexDeliveryExpress;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
+		DAB627EB2E314F98006BDB1D /* XCRemoteSwiftPackageReference "ReflectionHelper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/laconicman/ReflectionHelper";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		DAE444EA2E26EB1200C1CDF7 /* XCRemoteSwiftPackageReference "YandexDeliveryExpress" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/laconicman/YandexDeliveryExpress";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
 		DA155BC02E495C0D006DAF51 /* XCRemoteSwiftPackageReference "better-binding" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/laconicman/better-binding";
@@ -709,6 +714,7 @@
 		};
 		DAB627EC2E314F98006BDB1D /* ReflectionHelper */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = DAB627EB2E314F98006BDB1D /* XCRemoteSwiftPackageReference "ReflectionHelper" */;
 			productName = ReflectionHelper;
 		};
 		DAD4FB462E6F82BB0044856C /* MultiPicker */ = {
@@ -718,6 +724,7 @@
 		};
 		DAE444EB2E26EB1200C1CDF7 /* YandexDeliveryExpressAPI */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = DAE444EA2E26EB1200C1CDF7 /* XCRemoteSwiftPackageReference "YandexDeliveryExpress" */;
 			productName = YandexDeliveryExpressAPI;
 		};
 		DAF25B602E341F11001A1FB8 /* SFSafeSymbols */ = {

@@ -1,5 +1,5 @@
 {
-  "originHash" : "dd96545b0cd6b94cd5ad27d462aa80dd868ea944228c62e6005704a7487e6cb2",
+  "originHash" : "f3f5c3d1db000e54ef266f903b0060d0933bf301421244863003960850c18a5f",
   "pins" : [
     {
       "identity" : "better-binding",
@@ -56,6 +56,15 @@
       }
     },
     {
+      "identity" : "reflectionhelper",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/laconicman/ReflectionHelper",
+      "state" : {
+        "revision" : "f1031c0a00193a887ecbbe447a9c504f6bb3d574",
+        "version" : "1.0.0"
+      }
+    },
+    {
       "identity" : "sfsafesymbols",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SFSafeSymbols/SFSafeSymbols",
@@ -96,8 +105,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-http-types",
       "state" : {
-        "revision" : "a0a57e949a8903563aba4615869310c0ebf14c03",
-        "version" : "1.4.0"
+        "revision" : "db774a277f60063a32d854f2980299caf06da041",
+        "version" : "1.6.0"
       }
     },
     {
@@ -152,6 +161,15 @@
       "state" : {
         "revision" : "a27b21e0c81c5bf42049b897a62aaf387e80f279",
         "version" : "6.2.2"
+      }
+    },
+    {
+      "identity" : "yandexdeliveryexpress",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/laconicman/YandexDeliveryExpress",
+      "state" : {
+        "revision" : "268ab323013eda648043d71034ac09548919ca0a",
+        "version" : "0.1.0"
       }
     }
   ],
