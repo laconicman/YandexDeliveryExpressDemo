@@ -33,18 +33,60 @@ that is a decision each time, not the default.
   (its TD-5 flattening).
 - **Discharge:** plain values plus a convenience `init` in an extension (R2).
 
-## AD-4 — The app consumed the package by path — **discharged**
+## AD-4 — A clean clone cannot build — **open**, half done
 
-The project referenced `../../../Gateways/YandexDeliveryExpress` by relative path, so a clean
-clone proved nothing about the published product.
+The project referenced **two** packages by relative path. One is fixed; the other is not, so
+the property this item is actually about — a clean clone builds — is still false.
 
-- **Discharged by:** an `XCRemoteSwiftPackageReference` to
-  `https://github.com/laconicman/YandexDeliveryExpress`, `upToNextMajorVersion` from `0.1.0`,
-  with `Package.resolved` committed. Verified by *building*, not merely resolving: the compile
-  reads `SourcePackages/checkouts/`, not the sibling working copy.
-- **Cross-editing is unaffected.** Drag the local package folder into the Xcode project and the
-  local override wins over the remote of the same name — SwiftPM's supported workflow, and the
-  reason this manifest never has to be edited back and forth.
+`YandexDeliveryExpressAPI` is now an `XCRemoteSwiftPackageReference` to
+`https://github.com/laconicman/YandexDeliveryExpress`, `upToNextMajorVersion` from `0.1.0`,
+with `Package.resolved` committed. Cross-editing is unaffected: dragging the local package
+folder into the project still overrides the remote of the same name, which is why this manifest
+never has to be edited back and forth.
+
+**`ReflectionHelper` is the remainder**, and it is worse than a path — see AD-6.
+
+- **Cost:** unchanged and unreduced. The one thing a sample app exists to prove is still
+  unproven, because *any* unresolvable dependency fails the whole graph.
+- **Discharge:** AD-6, then re-run the check below.
+- **The check, which is the actual acceptance criterion.** Resolving in the working copy proves
+  nothing, because every local path still exists there. Clone somewhere else and resolve:
+
+  ```console
+  % git clone https://github.com/laconicman/YandexDostavka /tmp/clone
+  % cd /tmp/clone/YandexDeliveryExpressDemo
+  % xcodebuild -resolvePackageDependencies -scheme YandexDeliveryExpressDemo
+  ```
+
+  This was skipped the first time, which is how AD-4 came to be marked discharged while still
+  broken: the change was verified, the claim was not.
+
+## AD-6 — `ReflectionHelper` exists only on one machine — **open**
+
+`PropertyInspector/` imports `ReflectionHelper`, a package at
+`../../../OpenSource/ReflectionHelper` — outside this workspace, a git repository with two
+commits, **no remote, and no counterpart on GitHub**. A clean clone fails to resolve:
+
+```
+the package at '…/OpenSource/ReflectionHelper' cannot be accessed (doesn't exist in file system)
+```
+
+It is not scaffolding: `FilteredPropertyInspectorView` is reachable from two live screens,
+`CreateClaimForm` and `CalculateOffersForm`, where it renders the decoded response for
+inspection. That is arguably the most instructive thing this demo does.
+
+- **Cost:** nobody but the author can build this app, which makes the repository private in
+  effect regardless of its setting.
+- **Discharge — the author's call, and the options differ in kind rather than degree:**
+  1. **Publish it.** One 236-line source file with tests; a real, if small, reusable package.
+     Then reference it by URL like everything else.
+  2. **Vendor it.** Copy the source into the app and delete the dependency. The author's
+     standing preference is to prefer a vetted SPM *when the dependency is smaller than the
+     problem* — and to say so explicitly when it is not. At 236 lines of `Mirror` plumbing
+     against a package that has to be published, tagged and maintained, this is a case where
+     it plausibly is not.
+  3. **Drop the feature.** Cheapest, and the worst trade: the property inspector is the part of
+     the demo that shows what a decoded response actually contains.
 
 ## AD-5 — Almost no previews, and no tests — **open**
 
