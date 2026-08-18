@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "df4b3471-c0a6-4b8f-b221-a7d7a3007aeb",
+		"name": "Базовые запросы",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21326133"
+	},
+	"item": [
+		{
+			"name": "Получение вариантов доставки",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "ru",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"items\": [\n        {\n            \"quantity\": 1,\n            \"size\": {\n                \"height\": 0.1,\n                \"length\": 0.1,\n                \"width\": 0.1\n            },\n            \"weight\": 1\n        }\n    ],\n       \"requirements\": {\n        \"taxi_classes\": [\n            \"express\"\n        ]\n    },\n    \"route_points\": [\n        {\n            \"coordinates\": [\n                37.602392,\n                55.689319\n            ],\n            \"fullname\": \"Москва,Большая Черёмушкинская улица,1\"\n        },\n        {\n            \"coordinates\": [\n37.527813,55.77797\n            ],\n            \"fullname\": \"Москва,Хорошёвское шоссе,дом 66\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://b2b.taxi.yandex.net/b2b/cargo/integration/v2/offers/calculate",
+					"protocol": "https",
+					"host": [
+						"b2b",
+						"taxi",
+						"yandex",
+						"net"
+					],
+					"path": [
+						"b2b",
+						"cargo",
+						"integration",
+						"v2",
+						"offers",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создание заявки",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "ru",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"offer_payload\":\"Взять подходящий оффер из ответа метода https://b2b.taxi.yandex.net/b2b/cargo/integration/v2/offers/calculate\",\n    \"client_requirements\": {\n        \"assign_robot\": false,\n        \"pro_courier\": false,\n        \"taxi_class\": \"express\",\n        \"cargo_options\": [\n            \"auto_courier\"\n        ]\n    },\n    \"comment\": \"Осторожно — в корзине пирожки!\",\n    \"emergency_contact\": {\n        \"name\": \"Красная Шапочка\",\n        \"phone\": \"+79123456789\"\n    },\n    \"items\": [\n        {\n            \"cost_currency\": \"RUB\",\n            \"cost_value\": \"200.00\",\n            \"droppof_point\": 2,\n            \"extra_id\": \"БП-208\",\n            \"pickup_point\": 1,\n            \"quantity\": 1,\n            \"size\": {\n                \"height\": 0.05,\n                \"length\": 0.1,\n                \"width\": 0.1\n            },\n            \"title\": \"Пирожки с картошкой\",\n            \"weight\": 0.3\n        }\n    ],\n    \"optional_return\": false,\n    \"route_points\": [\n        {\n            \"address\": {\n                \"coordinates\": [\n                    37.312082,\n                    55.634253\n                ],\n                \"fullname\": \"Москва, деревня Рассказовка, ул. Сказочная, д. 5\",\n                \"comment\": \"Калитка открыта, постучать в дверь три раза, топнуть ногой и повернуться три раза вокруг себя\",\n                \"country\": \"Российская Федерация\"\n            },\n            \"contact\": {\n                \"email\": \"shapka@failytail.ru\",\n                \"name\": \"Красная Шапочка\",\n                \"phone\": \"+79123456789\"\n            },\n            \"external_order_cost\": {\n                \"currency\": \"RUB\",\n                \"currency_sign\": \"₽\",\n                \"value\": \"200.0\"\n            },\n            \"external_order_id\": \"100\",\n            \"pickup_code\": \"893422\",\n            \"point_id\": 1,\n            \"skip_confirmation\": false,\n            \"type\": \"source\",\n            \"visit_order\": 1\n        },\n        {\n            \"address\": {\n                \"coordinates\": [\n                    37.307115,\n                    55.634146\n                ],\n                \"fullname\": \"Москва, деревня Рассказовка, ул. Сказочная, д. 1\",\n                \"comment\": \"Бабушка спит, подойти к окну и прокричать 3 раза, что вы курьер от Яндекса\",\n                \"country\": \"Российская Федерация\",\n                \"porch\": \"A\",\n                \"sflat\": \"1\",\n                \"sfloor\": \"1\"\n            },\n            \"contact\": {\n                \"email\": \"babushka@failytail.ru\",\n                \"name\": \"Бабушка\",\n                \"phone\": \"+79876543210\"\n            },\n            \"external_order_cost\": {\n                \"currency\": \"RUB\",\n                \"currency_sign\": \"₽\",\n                \"value\": \"200.0\"\n            },\n            \"external_order_id\": \"100\",\n            \"point_id\": 2,\n            \"skip_confirmation\": true,\n            \"type\": \"destination\",\n            \"visit_order\": 2\n        }\n    ],\n    \"skip_act\": false,\n    \"skip_client_notify\": false,\n    \"skip_door_to_door\": false,\n    \"skip_emergency_notify\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://b2b.taxi.yandex.net/b2b/cargo/integration/v2/claims/create?request_id=100000000000",
+					"protocol": "https",
+					"host": [
+						"b2b",
+						"taxi",
+						"yandex",
+						"net"
+					],
+					"path": [
+						"b2b",
+						"cargo",
+						"integration",
+						"v2",
+						"claims",
+						"create"
+					],
+					"query": [
+						{
+							"key": "request_id",
+							"value": "100000000000",
+							"description": "Ключ идемпотентности"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Подтверждение заявки",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "ru",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"version\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://b2b.taxi.yandex.net/b2b/cargo/integration/v2/claims/accept?claim_id=уникальный ID заявки",
+					"protocol": "https",
+					"host": [
+						"b2b",
+						"taxi",
+						"yandex",
+						"net"
+					],
+					"path": [
+						"b2b",
+						"cargo",
+						"integration",
+						"v2",
+						"claims",
+						"accept"
+					],
+					"query": [
+						{
+							"key": "claim_id",
+							"value": "уникальный ID заявки",
+							"description": "Ключ идемпотентности"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получение информации о заявке",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "ru",
+						"description": "ru или en",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/*",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://b2b.taxi.yandex.net/b2b/cargo/integration/v2/claims/info/?claim_id=уникальный ID заявки",
+					"protocol": "https",
+					"host": [
+						"b2b",
+						"taxi",
+						"yandex",
+						"net"
+					],
+					"path": [
+						"b2b",
+						"cargo",
+						"integration",
+						"v2",
+						"claims",
+						"info",
+						""
+					],
+					"query": [
+						{
+							"key": "claim_id",
+							"value": "уникальный ID заявки",
+							"description": "Поле «id» из ответа на запрос создания заявки"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Отмена заявки",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "ru",
+						"description": "ru или en",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/*",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"cancel_state\": \"взять из ответа метода получения признака отмены\",\n  \"version\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://b2b.taxi.yandex.net/b2b/cargo/integration/v2/claims/cancel/?claim_id=уникальный ID заявки",
+					"protocol": "https",
+					"host": [
+						"b2b",
+						"taxi",
+						"yandex",
+						"net"
+					],
+					"path": [
+						"b2b",
+						"cargo",
+						"integration",
+						"v2",
+						"claims",
+						"cancel",
+						""
+					],
+					"query": [
+						{
+							"key": "claim_id",
+							"value": "уникальный ID заявки",
+							"description": "Поле «id» из ответа на запрос создания заявки"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получения признака отмены",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "ru",
+						"description": "ru или en",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/*",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://b2b.taxi.yandex.net/b2b/cargo/integration/v2/claims/cancel-info?claim_id=уникальный ID заявки",
+					"protocol": "https",
+					"host": [
+						"b2b",
+						"taxi",
+						"yandex",
+						"net"
+					],
+					"path": [
+						"b2b",
+						"cargo",
+						"integration",
+						"v2",
+						"claims",
+						"cancel-info"
+					],
+					"query": [
+						{
+							"key": "claim_id",
+							"value": "уникальный ID заявки",
+							"description": "Поле «id» из ответа на запрос создания заявки"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
