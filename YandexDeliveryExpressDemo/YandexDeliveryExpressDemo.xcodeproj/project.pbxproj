@@ -10,6 +10,7 @@
 		DA155BC22E495C0D006DAF51 /* BetterBinding in Frameworks */ = {isa = PBXBuildFile; productRef = DA155BC12E495C0D006DAF51 /* BetterBinding */; };
 		DA4BF4472E3CA1F8002BC807 /* IdentifiedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = DA4BF4462E3CA1F8002BC807 /* IdentifiedCollections */; };
 		DAB627ED2E314F98006BDB1D /* ReflectionHelper in Frameworks */ = {isa = PBXBuildFile; productRef = DAB627EC2E314F98006BDB1D /* ReflectionHelper */; };
+		DAD4FB472E6F82BB0044856C /* MultiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = DAD4FB462E6F82BB0044856C /* MultiPicker */; };
 		DAE444EC2E26EB1200C1CDF7 /* YandexDeliveryExpressAPI in Frameworks */ = {isa = PBXBuildFile; productRef = DAE444EB2E26EB1200C1CDF7 /* YandexDeliveryExpressAPI */; };
 		DAF25B612E341F11001A1FB8 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = DAF25B602E341F11001A1FB8 /* SFSafeSymbols */; };
 /* End PBXBuildFile section */
@@ -89,6 +90,7 @@
 				DAF25B612E341F11001A1FB8 /* SFSafeSymbols in Frameworks */,
 				DAE444EC2E26EB1200C1CDF7 /* YandexDeliveryExpressAPI in Frameworks */,
 				DAB627ED2E314F98006BDB1D /* ReflectionHelper in Frameworks */,
+				DAD4FB472E6F82BB0044856C /* MultiPicker in Frameworks */,
 				DA155BC22E495C0D006DAF51 /* BetterBinding in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -155,6 +157,7 @@
 				DAF25B602E341F11001A1FB8 /* SFSafeSymbols */,
 				DA4BF4462E3CA1F8002BC807 /* IdentifiedCollections */,
 				DA155BC12E495C0D006DAF51 /* BetterBinding */,
+				DAD4FB462E6F82BB0044856C /* MultiPicker */,
 			);
 			productName = YandexDeliveryExpressDemo;
 			productReference = DAE444AF2E26E71900C1CDF7 /* YandexDeliveryExpressDemo.app */;
@@ -244,6 +247,7 @@
 				DAF25B5F2E341F11001A1FB8 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 				DA4BF4452E3CA1F8002BC807 /* XCRemoteSwiftPackageReference "swift-identified-collections" */,
 				DA155BC02E495C0D006DAF51 /* XCRemoteSwiftPackageReference "better-binding" */,
+				DAD4FB452E6F82BB0044856C /* XCRemoteSwiftPackageReference "MultiPicker" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = DAE444B02E26E71900C1CDF7 /* Products */;
@@ -674,6 +678,14 @@
 				minimumVersion = 1.1.1;
 			};
 		};
+		DAD4FB452E6F82BB0044856C /* XCRemoteSwiftPackageReference "MultiPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/toastersocks/MultiPicker";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.2;
+			};
+		};
 		DAF25B5F2E341F11001A1FB8 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SFSafeSymbols/SFSafeSymbols";
@@ -698,6 +710,11 @@
 		DAB627EC2E314F98006BDB1D /* ReflectionHelper */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ReflectionHelper;
+		};
+		DAD4FB462E6F82BB0044856C /* MultiPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DAD4FB452E6F82BB0044856C /* XCRemoteSwiftPackageReference "MultiPicker" */;
+			productName = MultiPicker;
 		};
 		DAE444EB2E26EB1200C1CDF7 /* YandexDeliveryExpressAPI */ = {
 			isa = XCSwiftPackageProductDependency;

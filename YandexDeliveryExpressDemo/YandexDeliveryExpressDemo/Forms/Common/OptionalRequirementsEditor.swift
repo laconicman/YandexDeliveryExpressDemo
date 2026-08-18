@@ -37,7 +37,7 @@ struct OptionalRequirementsEditor: View {
         }
         
         DisclosureGroup("CargoOptions") {
-            MultiPicker(selection: $cargoOptions)
+            MultiPickerCaseIterable(selection: $cargoOptions)
         }
     }
 

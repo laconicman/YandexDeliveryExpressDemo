@@ -22,6 +22,7 @@ final class CreateClaimViewModel: BaseFormViewModel, FormViewModelProtocol {
     
     // Optional parameters
     @Published var clientRequirements: Components.Schemas.ClientRequirements?
+    @Published var offerPayload: String?
     @Published var shippingDocument: String = ""
     @Published var comment: String = ""
     @Published var skipDoorToDoor: Bool?
@@ -80,6 +81,7 @@ final class CreateClaimViewModel: BaseFormViewModel, FormViewModelProtocol {
                     clientRequirements: clientRequirements,
                     comment: comment.isEmpty ? nil : comment,
                     due: due,
+                    offerPayload: offerPayload,
                     shippingDocument: shippingDocument.isEmpty ? nil : shippingDocument,
                     skipDoorToDoor: skipDoorToDoor
                 )

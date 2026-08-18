@@ -1,5 +1,5 @@
 {
-  "originHash" : "cd3c59bec90fae6d9e5460dcbe33a53c8d06db87e1a3035db8371d1d49ff58f4",
+  "originHash" : "dd96545b0cd6b94cd5ad27d462aa80dd868ea944228c62e6005704a7487e6cb2",
   "pins" : [
     {
       "identity" : "better-binding",
@@ -8,6 +8,42 @@
       "state" : {
         "revision" : "ec1dae389e4b72220f9b4b5cb3620e08b7a3b3c4",
         "version" : "0.1.0"
+      }
+    },
+    {
+      "identity" : "flow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/toastersocks/Flow.git",
+      "state" : {
+        "revision" : "0873e0d01e5e6b14968e22e56e588eaad26a7d8b",
+        "version" : "1.2.4"
+      }
+    },
+    {
+      "identity" : "helpers",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/toastersocks/Helpers.git",
+      "state" : {
+        "revision" : "cc32e570cc0b2b45bdd6ac88f089a3755f46770c",
+        "version" : "0.7.0"
+      }
+    },
+    {
+      "identity" : "multipicker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/toastersocks/MultiPicker",
+      "state" : {
+        "revision" : "2201cb04de77147778b351b71fcda030fb7ac6a2",
+        "version" : "2.0.2"
+      }
+    },
+    {
+      "identity" : "openapikit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattpolzin/OpenAPIKit",
+      "state" : {
+        "revision" : "57b6318128e3f901c93f4fbf98d1c1464ec168d3",
+        "version" : "6.2.0"
       }
     },
     {
@@ -26,6 +62,24 @@
       "state" : {
         "revision" : "3dd282d3269b061853a3b3bcd23a509d2aa166ce",
         "version" : "6.2.0"
+      }
+    },
+    {
+      "identity" : "swift-algorithms",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-algorithms",
+      "state" : {
+        "revision" : "87e50f483c54e6efd60e885f7f5aa946cee68023",
+        "version" : "1.2.1"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser",
+      "state" : {
+        "revision" : "6a52f3251125d74daf04fcbd5e6f08a75d074382",
+        "version" : "1.8.2"
       }
     },
     {
@@ -56,12 +110,30 @@
       }
     },
     {
+      "identity" : "swift-numerics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-numerics.git",
+      "state" : {
+        "revision" : "0c0290ff6b24942dadb83a929ffaaa1481df04a2",
+        "version" : "1.1.1"
+      }
+    },
+    {
+      "identity" : "swift-openapi-generator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-openapi-generator",
+      "state" : {
+        "revision" : "af9a2a1f5dcfb00a278d4bb29c6d75080932e99e",
+        "version" : "1.13.0"
+      }
+    },
+    {
       "identity" : "swift-openapi-runtime",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-openapi-runtime",
       "state" : {
-        "revision" : "8f33cc5dfe81169fb167da73584b9c72c3e8bc23",
-        "version" : "1.8.2"
+        "revision" : "3d3a8457661daf7fb260ceeb9f0e24e5204ba5fb",
+        "version" : "1.12.0"
       }
     },
     {
@@ -69,8 +141,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-openapi-urlsession",
       "state" : {
-        "revision" : "6fac6f7c428d5feea2639b5f5c8b06ddfb79434b",
-        "version" : "1.1.0"
+        "revision" : "08796d36c99ad2318929bfa1d1e40f82194b65cc",
+        "version" : "1.3.1"
+      }
+    },
+    {
+      "identity" : "yams",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jpsim/Yams",
+      "state" : {
+        "revision" : "a27b21e0c81c5bf42049b897a62aaf387e80f279",
+        "version" : "6.2.2"
       }
     }
   ],

@@ -1,5 +1,5 @@
 //
-//  MultiPicker.swift
+//  MultiPickerCaseIterable.swift
 //  YandexDeliveryExpressDemo
 //
 //  Created by Paul Buktab on 7/25/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MultiPicker<E: CaseIterable>: View where E: ManagedElement {
+struct MultiPickerCaseIterable<E: CaseIterable>: View where E: ManagedElement {
     @Binding private(set) var selection: [E]
     
     var body: some View {
@@ -28,7 +28,7 @@ struct MultiPicker<E: CaseIterable>: View where E: ManagedElement {
 #Preview {
     @Previewable @State var taxiClasses: [ManagedEnumSample] = [.express, .cargo]
     List {
-        MultiPicker(selection: $taxiClasses)
+        MultiPickerCaseIterable(selection: $taxiClasses)
     }
 }
 

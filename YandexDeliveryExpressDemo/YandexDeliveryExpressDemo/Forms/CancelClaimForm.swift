@@ -10,12 +10,19 @@ import YandexDeliveryExpressAPI
 
 struct CancelClaimForm: View {
     @StateObject private var viewModel = CancelClaimViewModel()
+    @EnvironmentObject private var common: CommonViewModel
     
     var body: some View {
         GenericForm("Cancel Claim", viewModel: viewModel) {
             SinglePicker("Language", systemImage: "globe", selection: $viewModel.acceptLanguage)
                 .pickerStyle(.segmented)
             ClaimIdSection(claimId: $viewModel.claimId)
+            Picker("Created claims", selection: $viewModel.claimId) {
+                ForEach(common.createdClaims) { claim in
+                    Text("\(claim.date): \(claim.id)")
+                        .tag(claim.id)
+                }
+            }
             FieldSection("Version", value: $viewModel.version)
             cancellationSection
             Text("hnbhb")

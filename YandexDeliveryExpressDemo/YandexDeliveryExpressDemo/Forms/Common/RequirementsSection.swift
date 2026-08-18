@@ -22,7 +22,7 @@ struct RequirementsSection: View {
     var body: some View {
         Section("Requirements") {
             DisclosureGroup("Taxi Classes", systemImage: "box.truck.badge.clock") {
-                MultiPicker(selection: $taxiClasses)
+                MultiPickerCaseIterable(selection: $taxiClasses)
             }
             
             SinglePicker("Cargo Type", systemImage: "truck.box", selection: $cargoType, hasNoneOption: true)

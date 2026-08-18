@@ -16,7 +16,7 @@ struct CalculateOffersForm: View {
             if case let .success(result) = viewModel.result, let json = try? result.ok.body.json {
                 FilteredPropertyInspectorView(object: json)
                     .onAppear {
-                        common.calalculatedOffers = json.offers
+                        common.calculatedOffers = json.offers
                     }
             }
         }
