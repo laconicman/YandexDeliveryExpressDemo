@@ -1,0 +1,279 @@
+openapi: 3.1.0
+info:
+  title: "Яндекс Доставка — Экспресс API"
+  version: "1.0.0"
+  description: "Полная спецификация публичного API экспресс-доставки Yango Delivery (Cargo Integration v2). Описание основано на официальной документации https://yandex.com/support/delivery-profile/ru/api/express/overview и адаптировано под ограничения Swift OpenAPI Generator."
+  contact:
+    name: "Yandex Delivery Support"
+    url: "https://yandex.com/support/delivery-profile"
+servers:
+  - url: "https://b2b.taxi.yandex.net/b2b/cargo/integration/v2"
+    description: "Production"
+  - url: "https://b2b.taxi.tst.yandex.net/b2b/cargo/integration/v2"
+    description: "Sandbox"
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: "OAuth"
+  schemas:
+    Money:
+      type: object
+      description: "Денежная сумма в валюте."
+      required: [value, currency]
+      properties:
+        value:
+          type: string
+          #pattern: "^(0|[1-9][0-9]*)(\.[0-9]{1,2})?$"
+          description: "Сумма в виде строки, чтобы избежать ошибок округления."
+          examples: ["300.50"]
+        currency:
+          type: string
+          description: "Код валюты ISO-4217."
+          examples: ["RUB"]
+    PointAddress:
+      type: object
+      description: "Адрес точки маршрута."
+      required: [fullname]
+      properties:
+        fullname:
+          type: string
+          description: "Полный адрес в свободной форме."
+        coordinates:
+          type: array
+          description: "Долгота и широта в WGS-84."
+          items:
+            type: number
+            format: double
+          minItems: 2
+          maxItems: 2
+          examples: [37.617644, 55.755819]
+    Item:
+      type: object
+      description: "Грузовое место или товар."
+      required: [title, cost]
+      properties:
+        title:
+          type: string
+          description: "Название груза."
+        cost:
+          $ref: "#/components/schemas/Money"
+        weight_kg:
+          type: number
+          format: double
+          minimum: 0
+          description: "Вес в килограммах."
+    Offer:
+      type: object
+      description: "Предложение сервиса доставки."
+      required: [offer_id, price]
+      properties:
+        offer_id:
+          type: string
+          description: "Уникальный идентификатор оффера."
+        price:
+          $ref: "#/components/schemas/Money"
+        service_level:
+          type: string
+          description: "Класс курьера (courier, express и т.-д.)."
+    ClaimStatus:
+      type: string
+      description: "Статус заявки."
+      enum: [new, estimating, accepted, performer_found, pickup_arrived, ready_for_pickup, delivering, delivered, cancelled]
+    Claim:
+      type: object
+      description: "Заявка на доставку."
+      required: [claim_id, status, route_points]
+      properties:
+        claim_id:
+          type: string
+          description: "Уникальный идентификатор заявки."
+        status:
+          $ref: "#/components/schemas/ClaimStatus"
+        price:
+          $ref: "#/components/schemas/Money"
+        route_points:
+          type: array
+          minItems: 2
+          items:
+            $ref: "#/components/schemas/PointAddress"
+paths:
+  /offers/calculate:
+    post:
+      operationId: "calculateOffers"
+      summary: "Расчёт доступных офферов"
+      description: "Возвращает список вариантов доставки и их стоимость без создания заявки."
+      tags: [Offers]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [route_points, items]
+              properties:
+                route_points:
+                  type: array
+                  minItems: 2
+                  items:
+                    $ref: "#/components/schemas/PointAddress"
+                items:
+                  type: array
+                  minItems: 1
+                  items:
+                    $ref: "#/components/schemas/Item"
+      responses:
+        "200":
+          description: "Список офферов."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Offer"
+        "400":
+          description: "Неверный запрос."
+  /claims/create:
+    post:
+      operationId: "createClaim"
+      summary: "Создать заявку"
+      description: "Создаёт заявку доставки по выбранному офферу."
+      tags: [Claims]
+      parameters:
+        - name: request_id
+          in: query
+          required: true
+          description: "Идемпотентный ключ клиента."
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [offer_id, route_points, items]
+              properties:
+                offer_id:
+                  type: string
+                  description: "Идентификатор оффера, полученный из /offers/calculate."
+                route_points:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/PointAddress"
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Item"
+      responses:
+        "200":
+          description: "Заявка создана."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Claim"
+        "409":
+          description: "Заявка с таким request_id уже существует."
+  /claims/info:
+    post:
+      operationId: "claimInfo"
+      summary: "Получить информацию о заявке"
+      tags: [Claims]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [claim_id]
+              properties:
+                claim_id:
+                  type: string
+      responses:
+        "200":
+          description: "Информация о заявке."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Claim"
+        "404":
+          description: "Заявка не найдена."
+  /claims/accept:
+    post:
+      operationId: "acceptClaim"
+      summary: "Подтвердить заявку"
+      tags: [Claims]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [claim_id, version]
+              properties:
+                claim_id:
+                  type: string
+                version:
+                  type: integer
+                  minimum: 1
+      responses:
+        "200":
+          description: "Заявка подтверждена."
+        "409":
+          description: "Конфликт версий."
+  /claims/cancel-info:
+    post:
+      operationId: "cancelInfo"
+      summary: "Условия отмены"
+      tags: [Claims]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [claim_id]
+              properties:
+                claim_id:
+                  type: string
+      responses:
+        "200":
+          description: "Доступные способы отмены."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  can_cancel:
+                    type: boolean
+                  fine_amount:
+                    $ref: "#/components/schemas/Money"
+  /claims/cancel:
+    post:
+      operationId: "cancelClaim"
+      summary: "Отменить заявку"
+      tags: [Claims]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [claim_id, version]
+              properties:
+                claim_id:
+                  type: string
+                version:
+                  type: integer
+                  minimum: 1
+                cancel_state:
+                  type: string
+                  enum: [free, paid]
+      responses:
+        "200":
+          description: "Заявка отменена."
+        "400":
+          description: "Отмена невозможна."

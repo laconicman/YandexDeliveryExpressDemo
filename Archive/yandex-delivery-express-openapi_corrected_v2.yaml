@@ -1,0 +1,1197 @@
+openapi: 3.1.0
+info:
+  title: "Яндекс Доставка API Экспресс-доставки"
+  description: |
+    API для создания и управления заявками экспресс-доставки через Яндекс Доставку.
+    
+    Основные возможности:
+    - Расчет стоимости доставки
+    - Создание заявок на доставку
+    - Подтверждение и отмена заявок
+    - Отслеживание статусов выполнения
+    
+    Документация: https://yandex.com/support/delivery-profile/ru/api/express/overview
+  version: "2.0"
+  contact:
+    name: "Яндекс Доставка"
+    url: "https://dostavka.yandex.ru"
+  license:
+    name: "Proprietary"
+
+servers:
+  - url: "https://b2b.taxi.yandex.net/b2b/cargo/integration/v2"
+    description: "Производственный сервер"
+
+security:
+  - bearerAuth: []
+
+paths:
+  /offers/calculate:
+    post:
+      operationId: "calculateOffers"
+      summary: "Расчет вариантов доставки"
+      description: |
+        Возвращает доступные варианты доставки для указанного маршрута.
+        
+        Каждый вариант содержит:
+        - Цену доставки
+        - Временной интервал забора посылки
+        - Временной интервал доставки
+        
+        Доступно только для России.
+      parameters:
+        - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalculateOffersRequest'
+            examples:
+              basic_request:
+                summary: "Базовый запрос"
+                value:
+                  items:
+                    - quantity: 1
+                      pickup_point: 1
+                      dropoff_point: 2
+                      weight: 2.0
+                      size:
+                        length: 0.1
+                        width: 0.2
+                        height: 0.3
+                  route_points:
+                    - id: 1
+                      coordinates: [37.6173, 55.7558]
+                      fullname: "Москва, Красная площадь, 1"
+                    - id: 2
+                      coordinates: [37.6063, 55.7558]
+                      fullname: "Москва, Тверская улица, 1"
+                  requirements:
+                    taxi_classes: ["express"]
+      responses:
+        '200':
+          description: "Успешный расчет вариантов доставки"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculateOffersResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /claims/create:
+    post:
+      operationId: "createClaim"
+      summary: "Создание заявки на доставку"
+      description: |
+        Создает заявку с указанными параметрами в системе Яндекс Доставки.
+        
+        Отправка запроса не означает, что заказ принят - необходимо дождаться
+        результата оценки через метод claims/info.
+      parameters:
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateClaimRequest'
+      responses:
+        '200':
+          description: "Заявка создана"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateClaimResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /claims/info:
+    post:
+      operationId: "getClaimInfo"
+      summary: "Получение информации по заявке"
+      description: |
+        Возвращает основную информацию по заявке: статус, стоимость, 
+        возможность бесплатной отмены и прочие детали.
+      parameters:
+        - $ref: '#/components/parameters/ClaimId'
+        - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: "Информация по заявке"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimInfoResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /claims/accept:
+    post:
+      operationId: "acceptClaim"
+      summary: "Подтверждение заявки"
+      description: |
+        Подтверждает заявку после успешной оценки. После подтверждения
+        заявка перейдет в статус 'accepted' и запустится поиск исполнителя.
+        
+        Оффер действителен 10 минут после получения статуса 'ready_for_approval'.
+      parameters:
+        - $ref: '#/components/parameters/ClaimId'
+        - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptClaimRequest'
+      responses:
+        '200':
+          description: "Заявка подтверждена"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptClaimResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /claims/cancel:
+    post:
+      operationId: "cancelClaim"
+      summary: "Отмена заявки"
+      description: |
+        Отменяет подтвержденную заявку. Операция доступна только в течение
+        ограниченного времени после подтверждения.
+      parameters:
+        - $ref: '#/components/parameters/ClaimId'
+        - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelClaimRequest'
+      responses:
+        '200':
+          description: "Заявка отменена"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelClaimResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: "OAuth токен из личного кабинета Яндекс Доставки"
+
+  parameters:
+    RequestId:
+      name: request_id
+      in: query
+      required: true
+      description: |
+        Токен идемпотентности. Уникальный идентификатор запроса.
+        
+        Рекомендуется использовать UUID формат для гарантии уникальности.
+        При повторном использовании того же request_id будет возвращена
+        информация о ранее созданной заявке.
+      schema:
+        type: string
+        format: uuid
+        example: "550e8400-e29b-41d4-a716-446655440000"
+
+    ClaimId:
+      name: claim_id
+      in: query
+      required: true
+      description: "ID заявки, полученный при создании"
+      schema:
+        type: string
+        example: "741cedf82cd464fa6fa16d87155c636"
+
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: true
+      description: "Предпочитаемый язык ответа"
+      schema:
+        type: string
+        enum: ["ru", "en"]
+        default: "ru"
+        example: "ru"
+
+  responses:
+    BadRequest:
+      description: "Некорректный запрос"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            parse_error:
+              summary: "Ошибка парсинга JSON"
+              value:
+                code: "Parse error"
+                message: "Проверьте корректность составленного JSON"
+            unknown_zone:
+              summary: "Неверные координаты"
+              value:
+                code: "unknown_zone"
+                message: "Неверные координаты. Проверьте порядок: [долгота, широта]"
+            invalid_phone:
+              summary: "Неверный формат телефона"
+              value:
+                code: "invalid_phone_must_start_plus_symbol"
+                message: "Неверный формат телефона. Проверьте, что формат номера правильный: +79123456789"
+
+    Unauthorized:
+      description: "Неверный токен авторизации"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: "unauthorized"
+            message: "Указан неверный токен. Получите правильный токен в личном кабинете"
+
+    Conflict:
+      description: "Конфликт состояния заявки"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: "inappropriate_status"
+            message: "Недопустимое действие. Заявка уже была подтверждена, отменена или действие невозможно"
+
+    NotFound:
+      description: "Заявка не найдена"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    TooManyRequests:
+      description: "Превышен лимит запросов"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      headers:
+        Retry-After:
+          description: "Время в секундах до следующего разрешенного запроса"
+          schema:
+            type: integer
+
+    InternalServerError:
+      description: "Внутренняя ошибка сервера"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: "Internal server error"
+            message: "Попробуйте еще раз или измените запрос"
+
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: "Код ошибки"
+          example: "unauthorized"
+        message:
+          type: string
+          description: "Описание ошибки"
+          example: "Указан неверный токен"
+
+    CalculateOffersRequest:
+      type: object
+      required:
+        - route_points
+      properties:
+        route_points:
+          type: array
+          description: "Точки маршрута в порядке посещения А-Б1...БN"
+          items:
+            $ref: '#/components/schemas/RoutePointWithAddress'
+          minItems: 2
+        items:
+          type: array
+          description: "Параметры товаров для доставки"
+          items:
+            $ref: '#/components/schemas/Item'
+        requirements:
+          $ref: '#/components/schemas/OfferRequirements'
+
+    CalculateOffersResponse:
+      type: object
+      required:
+        - offers
+      properties:
+        offers:
+          type: array
+          description: "Доступные варианты доставки"
+          items:
+            $ref: '#/components/schemas/CalculatedOffer'
+
+    CreateClaimRequest:
+      type: object
+      required:
+        - items
+        - route_points
+      properties:
+        items:
+          type: array
+          description: "Товары для доставки"
+          items:
+            $ref: '#/components/schemas/CargoItem'
+        route_points:
+          type: array
+          description: "Точки маршрута с контактной информацией"
+          items:
+            $ref: '#/components/schemas/CargoPoint'
+        client_requirements:
+          $ref: '#/components/schemas/ClientRequirements'
+        shipping_document:
+          type: string
+          description: "Сопроводительный документ"
+        comment:
+          type: string
+          description: "Комментарий к заявке"
+          maxLength: 2000
+        skip_door_to_door:
+          type: boolean
+          description: "Отключить доставку до двери"
+          default: false
+
+    CreateClaimResponse:
+      type: object
+      required:
+        - id
+        - status
+        - version
+      properties:
+        id:
+          type: string
+          description: "Уникальный идентификатор заявки"
+          example: "741cedf82cd464fa6fa16d87155c636"
+        status:
+          $ref: '#/components/schemas/ClaimStatus'
+        version:
+          type: integer
+          format: int64
+          description: "Версия заявки"
+          example: 1
+        user_request_revision:
+          type: string
+          description: "Ревизия запроса пользователя"
+        skip_client_notify:
+          type: boolean
+          description: "Не уведомлять клиента"
+
+    ClaimInfoResponse:
+      type: object
+      required:
+        - id
+        - status
+        - version
+        - created_ts
+        - updated_ts
+        - items
+        - route_points
+        - revision
+        - user_request_revision
+      properties:
+        id:
+          type: string
+          description: "ID заявки"
+        status:
+          $ref: '#/components/schemas/ClaimStatus'
+        version:
+          type: integer
+          format: int64
+          description: "Версия заявки"
+        created_ts:
+          type: string
+          format: date-time
+          description: "Дата и время создания заявки"
+        updated_ts:
+          type: string
+          format: date-time
+          description: "Дата и время последнего обновления"
+        items:
+          type: array
+          description: "Параметры товаров"
+          items:
+            $ref: '#/components/schemas/CargoItem'
+        route_points:
+          type: array
+          description: "Информация по точкам маршрута"
+          items:
+            $ref: '#/components/schemas/ResponseCargoPoint'
+        revision:
+          type: integer
+          format: int64
+          description: "Ревизия заявки"
+        user_request_revision:
+          type: string
+          description: "Текущая версия изменений пользователя"
+        pricing:
+          $ref: '#/components/schemas/ClaimPricing'
+        matched_cars:
+          type: array
+          description: "Подходящие автомобили"
+          items:
+            $ref: '#/components/schemas/MatchedCar'
+        warnings:
+          type: array
+          description: "Предупреждения"
+          items:
+            $ref: '#/components/schemas/Warning'
+
+    AcceptClaimRequest:
+      type: object
+      required:
+        - version
+      properties:
+        version:
+          type: integer
+          format: int64
+          description: "Версия заявки для подтверждения"
+          example: 1
+
+    AcceptClaimResponse:
+      type: object
+      required:
+        - id
+        - status
+        - version
+        - user_request_revision
+        - skip_client_notify
+      properties:
+        id:
+          type: string
+          description: "ID заявки"
+        status:
+          $ref: '#/components/schemas/ClaimStatus'
+        version:
+          type: integer
+          format: int64
+          description: "Версия заявки"
+        user_request_revision:
+          type: string
+          description: "Ревизия запроса пользователя"
+        skip_client_notify:
+          type: boolean
+          description: "Не уведомлять клиента"
+
+    CancelClaimRequest:
+      type: object
+      required:
+        - version
+      properties:
+        version:
+          type: integer
+          format: int64
+          description: "Версия заявки для отмены"
+        cancel_state:
+          type: string
+          enum: ["free", "paid"]
+          description: "Тип отмены: бесплатная или платная"
+          default: "free"
+        reason:
+          type: string
+          description: "Причина отмены"
+          maxLength: 1000
+
+    CancelClaimResponse:
+      type: object
+      required:
+        - id
+        - status
+        - version
+      properties:
+        id:
+          type: string
+          description: "ID заявки"
+        status:
+          $ref: '#/components/schemas/ClaimStatus'
+        version:
+          type: integer
+          format: int64
+          description: "Версия заявки"
+        cancel_state:
+          type: string
+          enum: ["free", "paid"]
+          description: "Тип отмены"
+
+    RoutePointWithAddress:
+      type: object
+      required:
+        - id
+        - coordinates
+        - fullname
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: "Числовой ID точки"
+          example: 1
+        coordinates:
+          type: array
+          description: "Координаты [долгота, широта]"
+          items:
+            type: number
+            format: double
+          minItems: 2
+          maxItems: 2
+          example: [37.6173, 55.7558]
+        fullname:
+          type: string
+          description: "Полный адрес с городом, улицей и номером дома"
+          example: "Москва, Красная площадь, 1"
+        country:
+          type: string
+          description: "Страна"
+          example: "Россия"
+        city:
+          type: string
+          description: "Город"
+          example: "Москва"
+        street:
+          type: string
+          description: "Улица"
+          example: "Красная площадь"
+        building:
+          type: string
+          description: "Номер дома/строения"
+          example: "1"
+        porch:
+          type: string
+          description: "Подъезд"
+          example: "А"
+        sfloor:
+          type: string
+          description: "Этаж"
+          example: "1"
+        sflat:
+          type: string
+          description: "Квартира/офис"
+          example: "10"
+
+    Item:
+      type: object
+      required:
+        - quantity
+        - pickup_point
+        - dropoff_point
+      properties:
+        quantity:
+          type: integer
+          description: "Количество единиц товара"
+          minimum: 1
+          example: 1
+        pickup_point:
+          type: integer
+          format: int64
+          description: "ID точки забора товара"
+          example: 1
+        dropoff_point:
+          type: integer
+          format: int64
+          description: "ID точки доставки товара"
+          example: 2
+        weight:
+          type: number
+          format: double
+          description: "Вес товара в килограммах"
+          minimum: 0
+          example: 2.5
+        size:
+          $ref: '#/components/schemas/ItemSize'
+
+    CargoItem:
+      type: object
+      required:
+        - extra_id
+        - pickup_point
+        - dropoff_point
+        - title
+        - cost_value
+        - cost_currency
+        - quantity
+      properties:
+        extra_id:
+          type: string
+          description: "Внешний ID товара"
+          example: "ORDER-123"
+        pickup_point:
+          type: integer
+          format: int64
+          description: "ID точки забора"
+          example: 1
+        dropoff_point:
+          type: integer
+          format: int64
+          description: "ID точки доставки"
+          example: 2
+        title:
+          type: string
+          description: "Название товара"
+          example: "Смартфон"
+        cost_value:
+          type: string
+          description: "Стоимость товара в формате строки"
+          pattern: '^[0-9]+(\.[0-9]+)?$'
+          example: "25000.00"
+        cost_currency:
+          type: string
+          description: "Валюта стоимости"
+          enum: ["RUB", "USD", "EUR"]
+          example: "RUB"
+        quantity:
+          type: integer
+          description: "Количество единиц"
+          minimum: 1
+          example: 1
+        weight:
+          type: number
+          format: double
+          description: "Вес товара в кг"
+          minimum: 0
+          example: 0.5
+        size:
+          $ref: '#/components/schemas/ItemSize'
+
+    CargoPoint:
+      type: object
+      required:
+        - point_id
+        - visit_order
+        - address
+        - contact
+        - type
+      properties:
+        point_id:
+          type: integer
+          format: int64
+          description: "ID точки"
+          example: 1
+        visit_order:
+          type: integer
+          description: "Порядок посещения (начиная с 1)"
+          minimum: 1
+          example: 1
+        address:
+          $ref: '#/components/schemas/PointAddress'
+        contact:
+          $ref: '#/components/schemas/ContactWithPhone'
+        type:
+          $ref: '#/components/schemas/PointType'
+        external_order_id:
+          type: string
+          description: "Внешний ID заказа"
+          example: "EXT-12345"
+        skip_confirmation:
+          type: boolean
+          description: "Пропустить SMS подтверждение"
+          default: false
+
+    ResponseCargoPoint:
+      type: object
+      required:
+        - id
+        - address
+        - contact
+        - type
+        - visit_order
+        - visit_status
+        - visited_at
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: "ID точки"
+        address:
+          $ref: '#/components/schemas/PointAddress'
+        contact:
+          $ref: '#/components/schemas/ContactWithPhone'
+        type:
+          $ref: '#/components/schemas/PointType'
+        visit_order:
+          type: integer
+          description: "Порядок посещения"
+        visit_status:
+          $ref: '#/components/schemas/PointVisitStatus'
+        visited_at:
+          $ref: '#/components/schemas/PointVisitTime'
+        external_order_id:
+          type: string
+          description: "Внешний ID заказа"
+
+    PointAddress:
+      type: object
+      required:
+        - coordinates
+        - fullname
+      properties:
+        coordinates:
+          type: array
+          description: "Координаты [долгота, широта]"
+          items:
+            type: number
+            format: double
+          minItems: 2
+          maxItems: 2
+        fullname:
+          type: string
+          description: "Полный адрес"
+          example: "Москва, Красная площадь, 1"
+        country:
+          type: string
+          description: "Страна"
+        city:
+          type: string
+          description: "Город"
+        street:
+          type: string
+          description: "Улица"
+        building:
+          type: string
+          description: "Дом/строение"
+        porch:
+          type: string
+          description: "Подъезд"
+        sfloor:
+          type: string
+          description: "Этаж"
+        sflat:
+          type: string
+          description: "Квартира/офис"
+        door_code:
+          type: string
+          description: "Код домофона"
+        comment:
+          type: string
+          description: "Комментарий для курьера"
+          maxLength: 2000
+
+    ContactWithPhone:
+      type: object
+      required:
+        - name
+        - phone
+      properties:
+        name:
+          type: string
+          description: "Имя контактного лица"
+          example: "Иван Петров"
+        phone:
+          type: string
+          description: "Номер телефона в формате +7XXXXXXXXXX"
+          pattern: '^\+[1-9]\d{1,14}$'
+          example: "+79123456789"
+        email:
+          type: string
+          format: email
+          description: "Email (обязательно для точек отправки и возврата)"
+          example: "user@example.com"
+        phone_additional_code:
+          type: string
+          description: "Добавочный номер"
+          example: "123"
+
+    OfferRequirements:
+      type: object
+      properties:
+        taxi_classes:
+          type: array
+          description: "Классы такси для доставки"
+          items:
+            $ref: '#/components/schemas/TaxiClass'
+        cargo_type:
+          $ref: '#/components/schemas/CargoType'
+        cargo_loaders:
+          type: integer
+          description: "Количество грузчиков (1-2)"
+          minimum: 1
+          maximum: 2
+          example: 1
+        cargo_options:
+          type: array
+          description: "Дополнительные опции"
+          items:
+            $ref: '#/components/schemas/CargoOption'
+        pro_courier:
+          type: boolean
+          description: "Включить опцию Pro для курьера"
+          default: false
+        skip_door_to_door:
+          type: boolean
+          description: "Отключить доставку до двери"
+          default: false
+        due:
+          type: string
+          format: date-time
+          description: "Желаемое время прибытия курьера"
+
+    ClientRequirements:
+      type: object
+      required:
+        - taxi_class
+      properties:
+        taxi_class:
+          $ref: '#/components/schemas/TaxiClass'
+        cargo_type:
+          $ref: '#/components/schemas/CargoType'
+        cargo_loaders:
+          type: integer
+          description: "Количество грузчиков"
+          minimum: 1
+          maximum: 2
+        cargo_options:
+          type: array
+          description: "Дополнительные опции"
+          items:
+            $ref: '#/components/schemas/CargoOption'
+        pro_courier:
+          type: boolean
+          description: "Включить опцию Pro"
+          default: false
+
+    CalculatedOffer:
+      type: object
+      required:
+        - offer_id
+        - price
+        - taxi_class
+        - pickup_interval
+        - delivery_interval
+      properties:
+        offer_id:
+          type: string
+          description: "ID предложения для создания заявки"
+          example: "taxi_class=express,payload=..."
+        price:
+          $ref: '#/components/schemas/OfferPrice'
+        taxi_class:
+          $ref: '#/components/schemas/TaxiClass'
+        pickup_interval:
+          $ref: '#/components/schemas/TimeInterval'
+        delivery_interval:
+          $ref: '#/components/schemas/TimeInterval'
+        description:
+          type: string
+          description: "Описание варианта доставки"
+          example: "express_30min_longer"
+        offer_ttl:
+          type: string
+          format: date-time
+          description: "Время действия предложения"
+
+    OfferPrice:
+      type: object
+      required:
+        - total_price
+        - currency
+        - surge_ratio
+      properties:
+        total_price:
+          type: string
+          description: "Общая стоимость без НДС"
+          example: "450.00"
+        total_price_with_vat:
+          type: string
+          description: "Общая стоимость с НДС"
+          example: "540.00"
+        currency:
+          type: string
+          description: "Валюта"
+          example: "RUB"
+        surge_ratio:
+          type: number
+          format: double
+          description: "Коэффициент роста стоимости"
+          minimum: 1.0
+          example: 1.2
+        base_price:
+          type: string
+          description: "Базовая цена доставки"
+          example: "375.00"
+
+    TimeInterval:
+      type: object
+      required:
+        - from
+        - to
+      properties:
+        from:
+          type: string
+          format: date-time
+          description: "Начало интервала"
+        to:
+          type: string
+          format: date-time
+          description: "Конец интервала"
+
+    ItemSize:
+      type: object
+      required:
+        - length
+        - width
+        - height
+      properties:
+        length:
+          type: number
+          format: double
+          description: "Длина в метрах"
+          minimum: 0
+          example: 0.1
+        width:
+          type: number
+          format: double
+          description: "Ширина в метрах"
+          minimum: 0
+          example: 0.2
+        height:
+          type: number
+          format: double
+          description: "Высота в метрах"
+          minimum: 0
+          example: 0.3
+
+    ClaimPricing:
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/TaxiOffer'
+        currency_rules:
+          $ref: '#/components/schemas/CurrencyRules'
+
+    TaxiOffer:
+      type: object
+      required:
+        - offer_id
+        - price
+      properties:
+        offer_id:
+          type: string
+          description: "ID предложения"
+        price:
+          type: string
+          description: "Цена предложения без НДС"
+        price_with_vat:
+          type: string
+          description: "Цена предложения с НДС"
+        valid_until:
+          type: string
+          format: date-time
+          description: "Время действия предложения"
+
+    CurrencyRules:
+      type: object
+      required:
+        - code
+        - text
+        - template
+      properties:
+        code:
+          type: string
+          description: "Трехзначный код валюты"
+          example: "RUB"
+        text:
+          type: string
+          description: "Сокращенное название валюты"
+          example: "руб."
+        template:
+          type: string
+          description: "Шаблон отображения валюты"
+          example: "$VALUE$ $SIGN$$CURRENCY$"
+        sign:
+          type: string
+          description: "Символ валюты"
+          example: "₽"
+
+    MatchedCar:
+      type: object
+      required:
+        - taxi_class
+      properties:
+        taxi_class:
+          $ref: '#/components/schemas/TaxiClass'
+        cargo_type:
+          $ref: '#/components/schemas/CargoType'
+        cargo_loaders:
+          type: integer
+          description: "Количество грузчиков"
+        door_to_door:
+          type: boolean
+          description: "Доставка до двери"
+        pro_courier:
+          type: boolean
+          description: "Опция Pro курьера"
+
+    Warning:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: "Код предупреждения"
+          example: "not_fit_in_car"
+        message:
+          type: string
+          description: "Сообщение предупреждения"
+          example: "Груз может не поместиться в выбранный автомобиль"
+
+    ClaimStatus:
+      type: string
+      enum: [
+        "new",
+        "estimating",
+        "ready_for_approval",
+        "accepted",
+        "performer_lookup",
+        "performer_found",
+        "performer_draft",
+        "performer_not_found",
+        "pickup_arrived",
+        "ready_for_pickup_confirmation",
+        "pickuped",
+        "delivery_arrived",
+        "ready_for_delivery_confirmation",
+        "pay_waiting",
+        "delivered",
+        "delivered_finish",
+        "returning",
+        "returned",
+        "returned_finish",
+        "failed",
+        "cancelled",
+        "cancelled_by_taxi",
+        "cancelled_with_payment",
+        "cancelled_with_items_on_hands"
+      ]
+      description: |
+        Статус заявки в системе:
+        - new: Новая заявка
+        - estimating: Идет оценка заявки
+        - ready_for_approval: Заявка готова к подтверждению
+        - accepted: Заявка подтверждена
+        - performer_lookup: Поиск исполнителя
+        - performer_found: Исполнитель найден
+        - pickuped: Груз забран
+        - delivered: Доставлено
+        - cancelled: Отменена
+        - failed: Ошибка выполнения
+
+    TaxiClass:
+      type: string
+      enum: ["courier", "express", "cargo"]
+      description: |
+        Класс доставки:
+        - courier: Курьер (до 10 кг)
+        - express: Экспресс (до 20 кг)
+        - cargo: Грузовая (до 300-2000 кг)
+      example: "express"
+
+    CargoType:
+      type: string
+      enum: ["van", "lcv_m", "lcv_l", "lcv_xl"]
+      description: |
+        Тип кузова для грузовой доставки:
+        - van: Маленький кузов (до 300 кг)
+        - lcv_m: Средний кузов (до 700 кг)
+        - lcv_l: Большой кузов (до 1400 кг)
+        - lcv_xl: XL кузов (до 2000 кг)
+      example: "van"
+
+    CargoOption:
+      type: string
+      enum: ["thermobag", "auto_courier"]
+      description: |
+        Дополнительные опции доставки:
+        - thermobag: Термосумка
+        - auto_courier: Только водитель-курьер
+
+    PointType:
+      type: string
+      enum: ["source", "destination", "return"]
+      description: |
+        Тип точки маршрута:
+        - source: Точка отправления
+        - destination: Точка назначения
+        - return: Точка возврата
+
+    PointVisitStatus:
+      type: string
+      enum: ["pending", "arrived", "visited", "skipped"]
+      description: |
+        Статус посещения точки:
+        - pending: Еще не посещена
+        - arrived: Курьер прибыл
+        - visited: Груз передан/забран
+        - skipped: Точка пропущена
+
+    PointVisitTime:
+      type: object
+      properties:
+        actual:
+          type: string
+          format: date-time
+          description: "Фактическое время посещения"
+        expected:
+          type: string
+          format: date-time
+          description: "Ожидаемое время посещения"
+        expected_waiting_time_sec:
+          type: integer
+          format: int64
+          description: "Ожидаемое время ожидания в секундах"

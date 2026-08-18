@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yandex Delivery Express API Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="navigation">
+            <div class="nav-content">
+                <h1 class="nav-title">Yandex Delivery Express API</h1>
+                <button id="backButton" class="btn btn--outline btn--sm hidden">Back to Home</button>
+            </div>
+        </nav>
+
+        <!-- Home View -->
+        <div id="homeView" class="view-container">
+            <div class="container">
+                <div class="hero-section">
+                    <h2>API Operations Demo</h2>
+                    <p class="text-secondary">Explore all Yandex Delivery Express API operations with interactive forms</p>
+                </div>
+
+                <div class="operations-grid">
+                    <div class="operation-card card" data-operation="calculateOffers">
+                        <div class="card__body">
+                            <h3>Calculate Offers</h3>
+                            <p class="text-secondary">Get delivery options and pricing for a shipment</p>
+                            <div class="operation-badge">
+                                <span class="status status--info">GET</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="operation-card card" data-operation="createClaim">
+                        <div class="card__body">
+                            <h3>Create Claim</h3>
+                            <p class="text-secondary">Submit a new delivery request</p>
+                            <div class="operation-badge">
+                                <span class="status status--success">POST</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="operation-card card" data-operation="getClaimInfo">
+                        <div class="card__body">
+                            <h3>Get Claim Info</h3>
+                            <p class="text-secondary">Retrieve details about an existing claim</p>
+                            <div class="operation-badge">
+                                <span class="status status--info">GET</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="operation-card card" data-operation="acceptClaim">
+                        <div class="card__body">
+                            <h3>Accept Claim</h3>
+                            <p class="text-secondary">Confirm and accept a delivery claim</p>
+                            <div class="operation-badge">
+                                <span class="status status--warning">PUT</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="operation-card card" data-operation="cancelClaim">
+                        <div class="card__body">
+                            <h3>Cancel Claim</h3>
+                            <p class="text-secondary">Cancel an existing delivery claim</p>
+                            <div class="operation-badge">
+                                <span class="status status--error">DELETE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Views -->
+        <div id="formView" class="view-container hidden">
+            <div class="container">
+                <div class="form-header">
+                    <h2 id="formTitle">API Operation</h2>
+                    <p id="formDescription" class="text-secondary">Configure the parameters for this operation</p>
+                </div>
+
+                <div class="form-layout">
+                    <div class="form-section">
+                        <form id="apiForm" class="api-form">
+                            <div id="formFields"></div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn--primary">Execute API Call</button>
+                                <button type="button" id="resetForm" class="btn btn--outline">Reset Form</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="response-section">
+                        <div class="response-container">
+                            <h3>Request & Response</h3>
+                            <div id="requestDisplay" class="code-block hidden">
+                                <h4>Request JSON:</h4>
+                                <pre><code id="requestJson"></code></pre>
+                            </div>
+                            <div id="responseDisplay" class="code-block hidden">
+                                <h4>Response JSON:</h4>
+                                <pre><code id="responseJson"></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

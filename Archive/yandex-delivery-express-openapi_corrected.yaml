@@ -1,0 +1,457 @@
+openapi: 3.0.3
+info:
+  title: Яндекс Доставка – Экспресс-доставка API
+  version: 1.0.0
+  description: |
+    Современная спецификация **Экспресс-доставки** (Cargo Integration v2)
+    на основе публичной документации Яндекс Доставки[5][39][53][54] и примеров
+    Postman-коллекции «Базовые запросы»[1]. Все описания приведены на русском
+    языке, максимально близко к оригинальному тексту руководства разработчика.
+    
+    Особенности дизайна:
+    • OpenAPI 3.0.3 — на сегодняшний день максимально поддерживается
+      `swift-openapi-generator` 1.9.0[32].
+    • Аутентификация едина для всех методов: заголовок
+      `Authorization: Bearer <OAuth-token>`.
+    • Единственный сервер боевого контура — `https://b2b.taxi.yandex.net`.
+    • Путь `/b2b/cargo/integration/v2` вынесен в базовый `server.url` для
+      лаконичности всех операций.
+    • Используются перечисления (`enum`) вместо «сырых» строк там, где набор
+      значений явно ограничен документацией (класс тарифа, тип кузова, тип
+      точки и т. д.).
+    • В схемах применены описательные имена PascalCase — рекомендации
+      «Naming» из API Stylebook[personalization].
+    • Поля money представлены типом `string` (формат decimal) — наиболее
+      безопасно для дробных значений при межязыковой генерации кода.
+    • Документ не содержит внешних `$ref`, что устраняет одно из ограничений
+      текущей версии Swift OpenAPI Generator[25].
+
+servers:
+  - url: https://b2b.taxi.yandex.net/b2b/cargo/integration/v2
+    description: Продакшен-контур
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth
+
+  parameters:
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      description: Язык ответа (`ru` по умолчанию)
+      schema:
+        type: string
+        enum: [ru, en]
+
+  schemas:
+    TaxiClass:
+      type: string
+      description: Класс тарифа доставки
+      enum: [courier, express, cargo]
+
+    CargoType:
+      type: string
+      description: |
+        Размер кузова грузового автомобиля.
+        Полный набор уточняйте методом **/delivery-methods**.
+      enum: [van, lcv_m, lcv_l, lcv_xl]
+
+    PointType:
+      type: string
+      enum: [source, destination, return]
+
+    ClaimStatus:
+      type: string
+      description: Актуальный статус заявки (статусная модель).
+      enum:
+        - new
+        - estimating
+        - ready_for_approval
+        - accepted
+        - performer_draft
+        - performer_found
+        - pickup_arrived
+        - pickuped
+        - delivery_arrived
+        - delivered
+        - returned
+        - failed
+        - cancelled
+
+    Money:
+      type: object
+      required: [value, currency]
+      properties:
+        value:
+          type: string
+          pattern: "^\\d+\\.?\\d{0,4}$"
+          example: "250.00"
+        currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+          example: RUB
+
+    Coordinates:
+      type: array
+      minItems: 2
+      maxItems: 2
+      items:
+        type: number
+        format: double
+      example: [37.602392, 55.689319]
+
+    Address:
+      type: object
+      required: [fullname, coordinates]
+      properties:
+        fullname:
+          type: string
+          description: Полный адрес с городом, улицей и домом
+          example: Москва, Большая Черёмушкинская 1
+        coordinates:
+          $ref: "#/components/schemas/Coordinates"
+        comment:
+          type: string
+          description: Комментарий курьеру
+        country:
+          type: string
+          example: Российская Федерация
+
+    Contact:
+      type: object
+      required: [name, phone]
+      properties:
+        name:
+          type: string
+          example: Красная Шапочка
+        phone:
+          type: string
+          example: "+79123456789"
+        email:
+          type: string
+          format: email
+        phone_additional_code:
+          type: string
+
+    RoutePoint:
+      type: object
+      required: [point_id, type, visit_order, address, contact]
+      properties:
+        point_id:
+          type: integer
+          format: int64
+        type:
+          $ref: "#/components/schemas/PointType"
+        visit_order:
+          type: integer
+          format: int32
+        address:
+          $ref: "#/components/schemas/Address"
+        contact:
+          $ref: "#/components/schemas/Contact"
+        external_order_id:
+          type: string
+        pickup_code:
+          type: string
+        skip_confirmation:
+          type: boolean
+          default: false
+
+    ItemSize:
+      type: object
+      required: [length, width, height]
+      properties:
+        length:
+          type: number
+          format: double
+          example: 0.1
+        width:
+          type: number
+          format: double
+          example: 0.1
+        height:
+          type: number
+          format: double
+          example: 0.1
+
+    CargoItem:
+      type: object
+      required: [title, quantity, size, weight, cost]
+      properties:
+        title:
+          type: string
+          example: Пирожки с картошкой
+        quantity:
+          type: integer
+          example: 1
+        size:
+          $ref: "#/components/schemas/ItemSize"
+        weight:
+          type: number
+          format: double
+          example: 0.3
+        cost:
+          $ref: "#/components/schemas/Money"
+        pickup_point:
+          type: integer
+        dropoff_point:
+          type: integer
+
+    ClientRequirements:
+      type: object
+      required: [taxi_class]
+      properties:
+        taxi_class:
+          $ref: "#/components/schemas/TaxiClass"
+        cargo_type:
+          $ref: "#/components/schemas/CargoType"
+        cargo_loaders:
+          type: integer
+          format: int32
+        cargo_options:
+          type: array
+          items:
+            type: string
+          example: [auto_courier]
+        pro_courier:
+          type: boolean
+          default: false
+
+    # Основные DTO операций
+    OfferRequest:
+      type: object
+      required: [items, route_points, requirements]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CargoItem"
+        route_points:
+          type: array
+          items:
+            $ref: "#/components/schemas/RoutePoint"
+        requirements:
+          $ref: "#/components/schemas/ClientRequirements"
+
+    OfferResponse:
+      type: object
+      required: [offer_id, price]
+      properties:
+        offer_id:
+          type: string
+        price:
+          $ref: "#/components/schemas/Money"
+        valid_until:
+          type: string
+          format: date-time
+
+    ClaimRequest:
+      allOf:
+        - $ref: "#/components/schemas/OfferRequest"
+        - type: object
+          required: [offer_payload]
+          properties:
+            offer_payload:
+              type: string
+              description: Параметр `offer_id`, полученный из **/offers/calculate**.
+            emergency_contact:
+              $ref: "#/components/schemas/Contact"
+            callback_url:
+              type: string
+              format: uri
+            comment:
+              type: string
+
+    ClaimResponse:
+      type: object
+      required: [id, status, route_points]
+      properties:
+        id:
+          type: string
+        status:
+          $ref: "#/components/schemas/ClaimStatus"
+        route_points:
+          type: array
+          items:
+            $ref: "#/components/schemas/RoutePoint"
+        created_ts:
+          type: string
+          format: date-time
+        updated_ts:
+          type: string
+          format: date-time
+        pricing:
+          $ref: "#/components/schemas/Money"
+
+  responses:
+    BadRequest:
+      description: Ошибка валидации запроса
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [message]
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+
+paths:
+  /offers/calculate:
+    post:
+      summary: Расчёт вариантов доставки
+      description: |
+        Возвращает список доступных офферов с предварительной ценой[39].
+      operationId: calculateOffers
+      tags: [basic]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OfferRequest"
+      responses:
+        '200':
+          description: Успешный расчёт
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OfferResponse"
+        '400':
+          $ref: "#/components/responses/BadRequest"
+
+  /claims/create:
+    post:
+      summary: Создание заявки
+      description: |
+        Создаёт новую заявку и запускает процесс логистики[54].
+      operationId: createClaim
+      tags: [basic]
+      parameters:
+        - name: request_id
+          in: query
+          required: true
+          description: Уникальный ключ идемпотентности (UUID-v4)
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClaimRequest"
+      responses:
+        '200':
+          description: Заявка создана
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClaimResponse"
+        '400':
+          $ref: "#/components/responses/BadRequest"
+        '429':
+          description: Слишком много запросов
+
+  /claims/info:
+    post:
+      summary: Получение информации о заявке
+      operationId: getClaimInfo
+      tags: [basic]
+      parameters:
+        - name: claim_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Текущие данные заявки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClaimResponse"
+
+  /claims/accept:
+    post:
+      summary: Подтверждение заявки
+      operationId: acceptClaim
+      tags: [basic]
+      parameters:
+        - name: claim_id
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [version]
+              properties:
+                version:
+                  type: integer
+                  example: 1
+      responses:
+        '200':
+          description: Заявка подтверждена
+
+  /claims/cancel-info:
+    post:
+      summary: Получение признака отмены
+      operationId: getCancelOptions
+      tags: [basic]
+      parameters:
+        - name: claim_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Доступные способы отмены заявки
+
+  /claims/cancel:
+    post:
+      summary: Отмена заявки
+      operationId: cancelClaim
+      tags: [basic]
+      parameters:
+        - name: claim_id
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [cancel_state, version]
+              properties:
+                cancel_state:
+                  type: string
+                  enum: [free, paid]
+                  description: |
+                    free — бесплатная отмена; paid — удерживается
+                    стоимость подачи.
+                version:
+                  type: integer
+      responses:
+        '200':
+          description: Заявка отменена
