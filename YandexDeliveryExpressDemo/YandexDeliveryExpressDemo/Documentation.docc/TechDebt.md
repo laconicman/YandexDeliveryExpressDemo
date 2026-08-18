@@ -33,14 +33,18 @@ that is a decision each time, not the default.
   (its TD-5 flattening).
 - **Discharge:** plain values plus a convenience `init` in an extension (R2).
 
-## AD-4 — The app consumes the package by path — **open**
+## AD-4 — The app consumed the package by path — **discharged**
 
-`XCLocalSwiftPackageReference` to `../../../Gateways/YandexDeliveryExpress`, which is the
-sanctioned local-override workflow but means a clean clone does not prove the published
-product builds.
+The project referenced `../../../Gateways/YandexDeliveryExpress` by relative path, so a clean
+clone proved nothing about the published product.
 
-- **Cost:** the one thing a sample app exists to prove is unproven.
-- **Discharge:** switch to the URL now that `0.1.0` is tagged — <doc:Roadmap> → Next.
+- **Discharged by:** an `XCRemoteSwiftPackageReference` to
+  `https://github.com/laconicman/YandexDeliveryExpress`, `upToNextMajorVersion` from `0.1.0`,
+  with `Package.resolved` committed. Verified by *building*, not merely resolving: the compile
+  reads `SourcePackages/checkouts/`, not the sibling working copy.
+- **Cross-editing is unaffected.** Drag the local package folder into the Xcode project and the
+  local override wins over the remote of the same name — SwiftPM's supported workflow, and the
+  reason this manifest never has to be edited back and forth.
 
 ## AD-5 — Almost no previews, and no tests — **open**
 
