@@ -1,4 +1,4 @@
-# Code-session handoff — YandexDostavka (sample app)
+# Code-session handoff — YandexDeliveryExpressDemo (sample app)
 
 Written 2026-08-07. Companion sample for
 [`YandexDeliveryExpressAPI`](../YandexDeliveryExpress), the same relationship `Offhook` has

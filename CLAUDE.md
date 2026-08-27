@@ -1,4 +1,4 @@
-# YandexDostavka — sample app
+# YandexDeliveryExpressDemo — sample app
 
 SwiftUI demo for [`YandexDeliveryExpressAPI`](../YandexDeliveryExpress). Same relationship
 `Offhook` has to `swift-pjsua`: a separate repository whose job is to show what consuming the

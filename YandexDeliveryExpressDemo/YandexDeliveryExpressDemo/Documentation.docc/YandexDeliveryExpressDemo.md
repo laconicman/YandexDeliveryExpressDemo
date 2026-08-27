@@ -1,4 +1,4 @@
-# YandexDostavka
+# YandexDeliveryExpressDemo
 
 @Metadata { @TechnologyRoot }
 
