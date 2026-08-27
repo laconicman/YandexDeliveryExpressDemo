@@ -11,8 +11,9 @@ what cancelling costs, cancel.
 > document; the package's is hand-written.
 
 > **Renamed** from `YandexDostavka` on 2026-08-27, to match the Xcode project it contains.
-> That name now belongs to the product app built on the same package, so a stale remote
-> pointing at `laconicman/YandexDostavka` reaches a different repository — update it with
+> The product app built on the same package took the name
+> [`YDelivery`](https://github.com/laconicman/YDelivery), so GitHub's redirect from the old
+> URL still reaches this repository — but update stale remotes anyway:
 > `git remote set-url origin git@github.com:laconicman/YandexDeliveryExpressDemo.git`.
 
 ## Documentation
