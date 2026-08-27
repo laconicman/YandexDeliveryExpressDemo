@@ -1,4 +1,4 @@
-# YandexDostavka
+# YandexDeliveryExpressDemo
 
 The sample app for [`YandexDeliveryExpressAPI`](https://github.com/laconicman/YandexDeliveryExpress) —
 a SwiftUI demo whose job is to show what consuming that package honestly looks like, including
@@ -9,6 +9,11 @@ what cancelling costs, cancel.
 
 > **Unofficial**, and unaffiliated with Yandex. The API it talks to has no published OpenAPI
 > document; the package's is hand-written.
+
+> **Renamed** from `YandexDostavka` on 2026-08-27, to match the Xcode project it contains.
+> That name now belongs to the product app built on the same package, so a stale remote
+> pointing at `laconicman/YandexDostavka` reaches a different repository — update it with
+> `git remote set-url origin git@github.com:laconicman/YandexDeliveryExpressDemo.git`.
 
 ## Documentation
 
