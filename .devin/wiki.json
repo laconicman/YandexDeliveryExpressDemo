@@ -1,0 +1,12 @@
+{
+  "repo_notes": [
+    {
+      "content": "SCOPE — what this repository is and is not. YandexDeliveryExpressDemo is a demonstration application for the YandexDeliveryExpressAPI package, whose stated purpose is to show that package honestly with its rough edges left visible. It is deliberately not a product: its sibling YDelivery is the product bet, and the two should not be described as alternatives to each other. Nothing about the API's own behaviour belongs in this wiki — that is the package's catalogue. The Archive/ directory holds superseded material, including two earlier Markdown transcriptions of Yandex OpenAPI references, and should be described as an archive rather than as current documentation. CLAUDE.md is agent instructions and REVIEW.md is a review record; HANDOFF.md is working material. None of the three is product documentation.",
+      "author": "maintainer"
+    },
+    {
+      "content": "AUTHORITATIVE SOURCES, in precedence order. The DocC catalogue at YandexDeliveryExpressDemo/YandexDeliveryExpressDemo/Documentation.docc/ is authoritative for this app's direction: Design.md holds the decisions with their rejected alternatives, Roadmap.md the priority order, and TechDebt.md the numbered register of compromises carried. README.md is the entry point. For anything concerning the API, the YandexDeliveryExpress package's own DocC catalogue is authoritative, in particular its Owning the Specification and Working with the Yandex API articles.",
+      "author": "maintainer"
+    }
+  ]
+}
