@@ -32,7 +32,9 @@ final class CalculateOffersViewModel: BaseFormViewModel, FormViewModelProtocol {
     @Published var due: Date?
     
     var isValid: Bool {
-        routePoints.count >= 2
+        // The wire requires ≥1 item row — the field is non-optional since the
+        // package's 0.3.0 spec correction (live evidence, 2026-09-22).
+        routePoints.count >= 2 && !items.isEmpty
     }
     
     override init() {
@@ -89,7 +91,7 @@ final class CalculateOffersViewModel: BaseFormViewModel, FormViewModelProtocol {
                             value1: .init(id: $0.pointId),
                             value2: $0.address)
                     },
-                    items: items.isEmpty ? nil : items,
+                    items: items,
                     requirements: requirements
                 )
             )
