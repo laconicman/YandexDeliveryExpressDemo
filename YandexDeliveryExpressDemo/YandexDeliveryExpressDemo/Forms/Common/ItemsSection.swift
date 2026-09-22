@@ -27,7 +27,7 @@ struct ItemsSection: View {
             }
             .disabled(routePoints.count < 2)
         } header: {
-            Text("Items (Optional)")
+            Text("Items (at least 1)")
                 .badge(items.count)
         }
         
